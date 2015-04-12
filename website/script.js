@@ -21,9 +21,7 @@ window.onload = function() {
 // send the bookmark json back to the extension
 function sendBookmarkToExtension(jsonObject) {
     jsonString = JSON.stringify(jsonObject);
-    chrome.runtime.sendMessage(extension_id, {bookmarks: jsonString}, function(response) {
-        // console.log(response);
-    });   
+    chrome.runtime.sendMessage(extension_id, {bookmarks: jsonString});
 }
 
 // NOTE:
@@ -51,15 +49,6 @@ $(document).ready(function() {
                 "parentId": "1",
                 "title": "google",
                 "url": "https://www.google.com/"
-            },
-            {
-                "children": [],
-                "dateAdded": 1428792259995,
-                "dateGroupModified": 1428792259995,
-                "id": "11",
-                "index": 2,
-                "parentId": "1",
-                "title": "test"
             }
             ],
             "dateAdded": 1416532596847,

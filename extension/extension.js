@@ -5,16 +5,25 @@ chrome.pageAction.onClicked.addListener(function(tab) {
     chrome.bookmarks.getTree(function(bookmarkTreeNodes) {
         var jsonString = JSON.stringify(bookmarkTreeNodes, null, 2);
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, {bookmarks: jsonString}, function(response) {
-                // console.log("response from content script:")
-                // console.log(response.bookmarks);
-            });
+            chrome.tabs.sendMessage(tabs[0].id, {bookmarks: jsonString});
         });
     });
 });
 
 // accept json from website, then over-write user bookmarks
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
+    // first delete all user bookmarks
+    chrome.bookmarks.getTree(function(bookmarkTreeNodes) {
+        for (var i=0; i<bookmarkTreeNodes[0].children.length; i++) {
+            default_node = bookmarkTreeNodes[0].children[i];
+            for (var j=0; j<default_node.children.length; j++) {
+                modifiable_node = default_node.children[j];
+                chrome.bookmarks.removeTree(modifiable_node.id);
+            }
+        }
+    });
+
+    // then write json from website to bookmarks
     bookmarkTreeNodes = JSON.parse(request.bookmarks);
     for (var i=0; i<bookmarkTreeNodes[0].children.length; i++) {
         default_node = bookmarkTreeNodes[0].children[i];
