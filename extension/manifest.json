@@ -2,12 +2,21 @@
   "name": "lyybylry",
   "version": "1.0",
   "description": "woof",
-  "permissions": [
-    "bookmarks"
-  ],
   "background": {
     "scripts": ["extension.js"],
     "persistent": false
+  },
+  "page_action": {
+    "default_title": "lyybylry",
+    "default_icon": "fish.png"
+  },
+  "permissions": [
+    "bookmarks",
+    "declarativeContent"
+  ],
+  "icons" : {
+    "48" : "fish.png",
+    "128" : "fish.png"
   },
   "content_scripts": [
     {
@@ -15,9 +24,8 @@
       "js": ["middleman.js", "jquery.min.js"]
     }
   ],
-  "browser_action": {
-    "default_title": "lyybylry",
-    "default_icon": "fish.png"
+  "externally_connectable": {
+    "matches": ["http://127.0.0.1/*"]
   },
   "manifest_version": 2
 }
