@@ -1,0 +1,23 @@
+{
+  "name": "lyybylry",
+  "version": "1.0",
+  "description": "woof",
+  "permissions": [
+    "bookmarks"
+  ],
+  "background": {
+    "scripts": ["extension.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["middleman.js", "jquery.min.js"]
+    }
+  ],
+  "browser_action": {
+    "default_title": "lyybylry",
+    "default_icon": "fish.png"
+  },
+  "manifest_version": 2
+}
