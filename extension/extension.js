@@ -12,40 +12,32 @@ chrome.pageAction.onClicked.addListener(function(tab) {
 
 // accept json from website, then over-write user bookmarks
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
-    // first delete all user bookmarks
-    chrome.bookmarks.getTree(function(bookmarkTreeNodes) {
-        for (var i=0; i<bookmarkTreeNodes[0].children.length; i++) {
-            default_node = bookmarkTreeNodes[0].children[i];
-            for (var j=0; j<default_node.children.length; j++) {
-                modifiable_node = default_node.children[j];
-                chrome.bookmarks.removeTree(modifiable_node.id);
-            }
-        }
-    });
-
-    // then write json from website to bookmarks
-    bookmarkTreeNodes = JSON.parse(request.bookmarks);
-    for (var i=0; i<bookmarkTreeNodes[0].children.length; i++) {
-        default_node = bookmarkTreeNodes[0].children[i];
-        for (var j=0; j<default_node.children.length; j++) {
-            modifiable_node = default_node.children[j];
-            console.log(modifiable_node);
-        }
+    switch (request.operation) {
+        case 'remove':
+            chrome.bookmarks.remove(request.id);
+            break;
+        case 'create':
+            chrome.bookmarks.create({
+                'parentId'  : request.parentId,
+                'index'     : request.index,
+                'title'     : request.title,
+                'url'       : request.url
+            });
+            break;
+        case 'move':
+            chrome.bookmarks.move(request.id, {
+                'parentId'  : request.parentId,
+                'index'     : request.index
+            });
+            break;
+        case 'update':
+            chrome.bookmarks.update(request.id, {
+                'title'     : request.title,
+                'url'       : request.url
+            });
+            break;
     }
 });
-
-function createBookmarkNode(node) {
-    // base case: not a folder or an empty folder, create it and stop
-    if (node.children === undefined || node.children.length === 0) {
-        chrome.bookmarks.create(
-            {'parentId': node.parentId,
-             'title': 'Extension bookmarks'},
-             function(newFolder) {
-                console.log("added folder: " + newFolder.title);
-            });
-    }
-
-}
 
 // NOTE: ignore this function, do not touch
 // When the extension is installed or upgraded ...

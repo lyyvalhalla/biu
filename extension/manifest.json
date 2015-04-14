@@ -1,13 +1,13 @@
 {
-  "name": "lyybylry",
+  "name": "biu",
   "version": "1.0",
-  "description": "biubiubiu~",
+  "description": "Bookmark Initialization Utility",
   "background": {
     "scripts": ["extension.js"],
     "persistent": false
   },
   "page_action": {
-    "default_title": "lyybylry",
+    "default_title": "Bookmark Initialization Utility",
     "default_icon": "fish.png"
   },
   "permissions": [
