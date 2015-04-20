@@ -1,4 +1,4 @@
-pattern = '127.0.0.1';
+pattern = 'www.bookmark-b.io';
 
 // send json to middleman
 chrome.pageAction.onClicked.addListener(function(tab) {
